@@ -60,8 +60,8 @@ ya = acc_des(2) + (gain_dy*(vel_des(2)-ydot)) + (gain_py*(pos_des(2)-y));
 
 % Compute desired roll and pitch angle based on desired acceleration and
 % yaw angle, used for altitude controller
-roll_des = (1/g)*(xa*sin(phi))-(ya*cos(phi));
-pitch_des = (1/g)*(xa*cos(phi))+(ya*sin(phi));
+roll_des = (1/g)*((xa*sin(psi))-(ya*cos(psi))); %phi
+pitch_des = (1/g)*((xa*cos(psi))+(ya*sin(psi)));
 
 % Compute force (u1), position controller
 gain_pz = 1;
@@ -71,23 +71,23 @@ u1 = m*(g + acc_des(3) + (gain_dz*(vel_des(3)-zdot))+ (gain_pz*(pos_des(3)-z)) )
 
 gain_pphi = 20;
 gain_ptheta = 20;
-gain_ppsi = 0;
+gain_ppsi = 20;
 
 gain_dphi = 8;
 gain_dtheta = 8;
-gain_dpsi = 0;
+gain_dpsi = 8;
 
 
 
 u2 = I(1) * ( (gain_dphi*(0-wx)) + (gain_pphi*(roll_des - phi)));
-u3 = I(1) * ( (gain_dtheta*(0-wy)) + (gain_ptheta*(pitch_des - theta)));
-u4 = I(9) * ( (gain_ppsi*(wz_des-wz)) + (gain_ppsi*(psi_des - psi)));
+u3 = I(5) * ( (gain_dtheta*(0-wy)) + (gain_ptheta*(pitch_des - theta)));
+u4 = I(9) * ( (gain_dpsi*(wz_des-wz)) + (gain_ppsi*(psi_des - psi)));
 %% YOUR CODE ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set outputs
 F = u1;
 M = [u2; u3; u4];
 
-disp(u2);
+%disp(u2);
 
 end

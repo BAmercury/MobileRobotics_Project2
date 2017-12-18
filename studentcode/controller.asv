@@ -49,8 +49,8 @@ L = params.arm_length;
 % Compute desired linear accelerations, used for altitude controller
 gain_px = 1;
 gain_py = 1;
-gain_dx = 3;
-gain_dy = 3;
+gain_dx = 2;
+gain_dy = 2;
 
 
 xa = acc_des(1) + (gain_dx*(vel_des(1)-xdot)) + (gain_px*(pos_des(1)-x));
@@ -60,8 +60,8 @@ ya = acc_des(2) + (gain_dy*(vel_des(2)-ydot)) + (gain_py*(pos_des(2)-y));
 
 % Compute desired roll and pitch angle based on desired acceleration and
 % yaw angle, used for altitude controller
-roll_des = (1/g)*(xa*sin(phi))-(ya*cos(phi));
-pitch_des = (1/g)*(xa*cos(phi))+(ya*sin(phi));
+roll_des = (1/g)*(xa*sin(psi))+(ya*cos(psi));
+pitch_des = (1/g)*(xa*cos(psi))(ya*sin(psi));
 
 % Compute force (u1), position controller
 gain_pz = 1;
@@ -71,11 +71,11 @@ u1 = m*(g + acc_des(3) + (gain_dz*(vel_des(3)-zdot))+ (gain_pz*(pos_des(3)-z)) )
 
 gain_pphi = 20;
 gain_ptheta = 20;
-gain_ppsi = 0;
+gain_ppsi = 1;
 
-gain_dphi = 9;
-gain_dtheta = 10;
-gain_dpsi = 0;
+gain_dphi = 8;
+gain_dtheta = 8;
+gain_dpsi = 1;
 
 
 
