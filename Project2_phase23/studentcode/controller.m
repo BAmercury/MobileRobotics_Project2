@@ -46,11 +46,15 @@ I = params.I;
 L = params.arm_length;
 
 %% YOUR CODE STARTS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Compute desired linear accelerations, used for altitude controller
+% Compute desired linear accelerations
 gain_px = 1;
 gain_py = 1;
 gain_dx = 2;
 gain_dy = 2;
+% gain_px = params.kp_xy;
+% gain_py = params.kp_xy;
+% gain_dx = params.kd_xy;
+% gain_dy = params.kd_xy;
 
 
 xa = acc_des(1) + (gain_dx*(vel_des(1)-xdot)) + (gain_px*(pos_des(1)-x));
@@ -58,36 +62,46 @@ ya = acc_des(2) + (gain_dy*(vel_des(2)-ydot)) + (gain_py*(pos_des(2)-y));
 
 
 
-% Compute desired roll and pitch angle based on desired acceleration and
-% yaw angle, used for altitude controller
-roll_des = (1/g)*(xa*sin(psi))+(ya*cos(psi));
-pitch_des = (1/g)*(xa*cos(psi))(ya*sin(psi));
+% Compute desired roll and pitch angle based on desired acceleration and yaw angle
+roll_des = (1/g)*((xa*sin(psi))-(ya*cos(psi))); %phi
+pitch_des = (1/g)*((xa*cos(psi))+(ya*sin(psi)));
 
-% Compute force (u1), position controller
+
+% Compute force (u1)
 gain_pz = 1;
 gain_dz = 2;
+% gain_pz = params.kp_z;
+% gain_dz = params.kd_z;
 
 u1 = m*(g + acc_des(3) + (gain_dz*(vel_des(3)-zdot))+ (gain_pz*(pos_des(3)-z)) );
 
 gain_pphi = 20;
 gain_ptheta = 20;
-gain_ppsi = 1;
+gain_ppsi = 20;
+% gain_pphi = params.kp_roll;
+% gain_dphi = params.kd_roll;
+% 
+% gain_ptheta = params.kp_pitch;
+% gain_dtheta = params.kd_pitch;
+% 
+% gain_ppsi = params.kp_yaw;
+% gain_dpsi = params.kd_yaw;
+
 
 gain_dphi = 8;
 gain_dtheta = 8;
-gain_dpsi = 1;
+gain_dpsi = 8;
 
 
 
 u2 = I(1) * ( (gain_dphi*(0-wx)) + (gain_pphi*(roll_des - phi)));
-u3 = I(1) * ( (gain_dtheta*(0-wy)) + (gain_ptheta*(pitch_des - theta)));
-u4 = I(9) * ( (gain_ppsi*(wz_des-wz)) + (gain_ppsi*(psi_des - psi)));
+u3 = I(5) * ( (gain_dtheta*(0-wy)) + (gain_ptheta*(pitch_des - theta)));
+u4 = I(9) * ( (gain_dpsi*(wz_des-wz)) + (gain_ppsi*(psi_des - psi)));
+
 %% YOUR CODE ENDS HERE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set outputs
 F = u1;
 M = [u2; u3; u4];
-
-disp(u2);
 
 end

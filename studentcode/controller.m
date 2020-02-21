@@ -17,6 +17,7 @@ function [F, M] = controller(qd, t, params)
 pos_des = qd.pos_des;
 vel_des = qd.vel_des;
 acc_des = qd.acc_des;
+disp(acc_des)
 psi_des = qd.yaw_des;
 wx_des = 0;
 wy_des = 0;
@@ -64,8 +65,8 @@ roll_des = (1/g)*((xa*sin(psi))-(ya*cos(psi))); %phi
 pitch_des = (1/g)*((xa*cos(psi))+(ya*sin(psi)));
 
 % Compute force (u1), position controller
-gain_pz = 1;
-gain_dz = 2;
+gain_pz = 2;
+gain_dz = 3;
 
 u1 = m*(g + acc_des(3) + (gain_dz*(vel_des(3)-zdot))+ (gain_pz*(pos_des(3)-z)) );
 

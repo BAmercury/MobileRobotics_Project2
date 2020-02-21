@@ -3,8 +3,8 @@ function [desired_state] = step(t)
 % Step params
 x0 = 1;
 y0 = 1;
-z0 = 1;
-yaw0 = 1;
+z0 = 0;
+yaw0 = 0;
 
 %% You should NOT need to change anything below this line %%%%%%%%%%%%%%%%%
 % Set the position based on time
